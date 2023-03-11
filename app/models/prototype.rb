@@ -7,5 +7,5 @@ class Prototype < ApplicationRecord
   # この状態のことをbelongs toの関係といい、今回の場合は「Tweet belongs to User」の状態であると言えます。
   
   # Tweetモデルと他のモデル（User）との間に「1対1」のつながりがあることを示すのがbelongs_toメソッドです。
-
+  has_one_attached :image
 end
