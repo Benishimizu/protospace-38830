@@ -4,7 +4,9 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
   root to: "prototypes#index"
-  resources :prototypes
+  # resources :prototypes //7つのアクションが生成されてしまう
   # https://master.tech-camp.in/v2/curriculums/4220
   # https://master.tech-camp.in/v2/curriculums/4219
+
+  resources :prototype, only: [:create, :new]
 end
