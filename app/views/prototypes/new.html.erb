@@ -3,6 +3,13 @@
     <div class="form__wrapper">
       <h2 class="page-heading">新規プロトタイプ投稿</h2>
         <%# 部分テンプレートでフォームを表示する %>
+        <%= render partial: "form", locals: { prototype: @prototype } %>
+        <%# <%= render partial: "form", locals: { @prototype: @prototype } %#>  
+        でも大丈夫（上記は可読性のスピードを考慮した書き方）%>
+
     </div>
   </div>
 </div>
+
+
+

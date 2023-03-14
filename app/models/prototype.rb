@@ -25,10 +25,6 @@ class Prototype < ApplicationRecord
 
 
 
-
-
-
-
               #   今回のプロトタイプ投稿機能のルールに合うように、バリデーションを設定しましょう。
 
               # プロトタイプ情報の投稿機能におけるルールは以下のとおりでした。こちらを参考にしてください。
@@ -43,12 +39,11 @@ class Prototype < ApplicationRecord
               # validates :image, presence: true
               # 作業チェック
               # Prototypeモデルに、プロトタイプの名称、キャッチコピー、コンセプト、画像に関するバリデーションを記述した
-
+          # 
               validates :title, presence: true
               validates :catch_copy, presence: true
               validates :concept, presence: true
               validates :image, presence: true
-
 
 #               validatesバリデーツメソッド
               # validatesとは、バリデーションを設定する時に使用するメソッドです。
@@ -60,4 +55,15 @@ class Prototype < ApplicationRecord
               # このバリデーションを設けることで、名前が空欄の時データベースに保存できなくなります。
               # つまり、値を必ず入れなければいけません。
               # もし、空欄で登録しようとすると、エラーが発生します。
+
+ #           Bin//今回は画像がないと投稿できないので下記コードは不要
+              # validates :concept, presence: true, unless: :was_attached?
+
+              # def was_attached?
+              #   self.image.attached?
+              # end
+              # https://master.tech-camp.in/v2/curriculums/4763
+
+
+
 end
