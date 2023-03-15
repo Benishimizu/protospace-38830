@@ -92,6 +92,12 @@ class PrototypesController < ApplicationController
     @prototypes = Prototype.includes(:user)
     # @prototype = Prototype.all
     # includes(:user)は.allの役割も含めて対応してくれる
+    # @prototypes;app/views/postyepes/index.html.erb
+    # @post = "これはコントローラーで定義したインスタンス変数を確認するための文字列です"
+    # [EX]app/views/posts/index.html.erb
+      # <h1>トップページ</h1>
+      # <%= @post %>
+
     # #@messages = @room.messages.includes(:user)
 
     # この場合、メッセージに紐付くユーザー情報の取得に、メッセージの数と同じ回数のアクセスが必要になるので、N+1問題が発生します。

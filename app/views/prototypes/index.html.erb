@@ -26,6 +26,15 @@
             collectionオプションを使用すると、EACHメソッドで何行にも渡るコーディングを1行にまとめて同じ結果の処理を行うことができます。
             ：EACH METHODの短縮版
             
+
+            【例】collectionオプションを使用した場合（@hogesには繰り返し表示させたい要素が複数入っている）
+                <%= render partial: 'hoge', collection: @hoges %#>
+                collectionオプションを使用する際のポイントとしては、複数要素が入っているインスタンス変数を、collectionオプションの対象に指定することです。
+                また、collectionオプションを使用した場合、呼び出した部分テンプレート内では、インスタンス変数から取り出した要素を、部分テンプレート名と同じ変数名で扱うことができます。
+                つまり、_hoge.html.erb内において、@hogesから取り出された1つ1つの要素はhogeとして扱うことができます。
+                https://master.tech-camp.in/v2/curriculums/4762
+
+
               %#>
           <% end %#>
         </div>
