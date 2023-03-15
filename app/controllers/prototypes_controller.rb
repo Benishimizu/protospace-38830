@@ -86,7 +86,20 @@ class PrototypesController < ApplicationController
             # def tweet_params
             #   params.require(:tweet).permit(:name, :image, :text)
             # end
-  
+# 
+
+  def index
+    @prototypes = Prototype.includes(:user)
+    # @prototype = Prototype.all
+    # includes(:user)は.allの役割も含めて対応してくれる
+    # #@messages = @room.messages.includes(:user)
+
+    # この場合、メッセージに紐付くユーザー情報の取得に、メッセージの数と同じ回数のアクセスが必要になるので、N+1問題が発生します。
+    # その場合は、includesメソッドを使用して、解消しましょう。
+    # 全てのメッセージ情報に紐づくユーザー情報を、includes(:user)と記述をすることにより、ユーザー情報を1度のアクセスでまとめて取得することができます
+    # https://master.tech-camp.in/v2/curriculums/4762
+  end
+
 
 
   private

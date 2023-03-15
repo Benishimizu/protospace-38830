@@ -9,10 +9,27 @@
      <%# // ログインしているときは上記を表示する %>
     <div class="card__wrapper">
        <%# 投稿機能実装後、部分テンプレートでプロトタイプ投稿一覧を表示する %>
+          <%= render partial: 'prototype', collection: @prototypes %>
 
+        <%# Memo
+        <%= message.user.name %#>
+        %>
 
+      <%# 
+      PicTweetのツイート表示コード
 
+        <div class="contents row">
+          <% @tweets.each do |tweet| %#>
+            <%= render partial: "tweet", locals: { tweet: tweet } %#>
 
+            <%#MEMO
+            collectionオプションを使用すると、EACHメソッドで何行にも渡るコーディングを1行にまとめて同じ結果の処理を行うことができます。
+            ：EACH METHODの短縮版
+            
+              %#>
+          <% end %#>
+        </div>
+      %>
 
 
     </div>
