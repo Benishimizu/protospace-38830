@@ -7,11 +7,11 @@ class PrototypesController < ApplicationController
     # https://master.tech-camp.in/v2/curriculums/4217
 
   def create
-
+# 
             # Memo
             # @room = Room.find(params[:room_id])  //NEST 何に対する何なのか（EXどの投稿に対するコメントなのか、どのルームに対するメッセージか）
             # @message = @room.messages.new(message_params)
-
+# 
     @prototype = Prototype.new(prototype_params)
     #  @prototype = モデル名[今回はPrototype.rbの１番目の文章のPrototypeに該当].new(prototype_params[44行目のものに該当])
     if @prototype.save
@@ -20,7 +20,7 @@ class PrototypesController < ApplicationController
       render :new
     end
 
-      #  redirect_toリダイレクト トゥーメソッド
+#      #  redirect_toリダイレクト トゥーメソッド
       # Railsでリダイレクト処理を行う際に使用するメソッドです。
       # コントローラー等での処理が終わった後、アクションに対応するビューファイルを参照せずに、別ページへリダイレクトさせることができます。
  #        保存機能の実装
@@ -90,6 +90,7 @@ class PrototypesController < ApplicationController
 
   def index
     @prototypes = Prototype.includes(:user)
+  #
     # @prototype = Prototype.all
     # includes(:user)は.allの役割も含めて対応してくれる
     # @prototypes;app/views/postyepes/index.html.erb
@@ -106,7 +107,9 @@ class PrototypesController < ApplicationController
     # https://master.tech-camp.in/v2/curriculums/4762
   end
 
-
+  def show
+    
+  end
 
   private
 
@@ -114,7 +117,7 @@ class PrototypesController < ApplicationController
     params.require(:prototype).permit(:title, :catch_copy, :concept, :image).merge(user_id: current_user.id)
     # params.require(:prototype).permit(:title, :catch_copy, :concept, :image).merge(user_id: current_user.id)
  #     https://master.tech-camp.in/v2/curriculums/4221
- #     #  devise_parameter_sanitizerデバイス パラメーター サニタイザーメソッド
+      #  devise_parameter_sanitizerデバイス パラメーター サニタイザーメソッド
           # deviseにおけるparamsのようなメソッドです。
           # deviseのUserモデルに関わる「ログイン」「新規登録」などのリクエストからパラメーターを取得できます。
           # このメソッドとpermitメソッドを組み合わせることにより、deviseに定義されているストロングパラメーターに対し、自分で新しく追加したカラムも指定して含めることができます。
