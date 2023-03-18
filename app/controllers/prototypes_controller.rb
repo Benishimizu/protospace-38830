@@ -108,7 +108,7 @@ class PrototypesController < ApplicationController
   end
 
   def show
-    
+    @prototype = Prototype
   end
 
   private
