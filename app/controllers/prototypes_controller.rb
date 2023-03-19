@@ -139,6 +139,16 @@ class PrototypesController < ApplicationController
 
   end
 
+  def update
+
+  end
+
+  def edit
+
+  end
+
+
+
   private
 
   def prototype_params

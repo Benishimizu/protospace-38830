@@ -8,5 +8,5 @@ Rails.application.routes.draw do
   # https://master.tech-camp.in/v2/curriculums/4220
   # https://master.tech-camp.in/v2/curriculums/4219
 
-  resources :prototypes, only: [:show, :index, :create, :new]
+  resources :prototypes, only: [:update, :edit, :show, :index, :create, :new]
 end
