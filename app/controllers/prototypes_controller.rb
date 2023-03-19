@@ -108,7 +108,35 @@ class PrototypesController < ApplicationController
   end
 
   def show
-    @prototype = Prototype
+    @prototype = Prototype.find(params[:id])
+    # https://master.tech-camp.in/v2/curriculums/4220#8
+      #     showアクションをコントローラーに定義しよう
+      # 次は、ツイート詳細画面に必要な情報を、データベースから取得するためにshowアクションを定義しましょう。
+
+      # tweets_controller.rbを編集しましょう
+      # showアクションでは、詳細を表示したいツイートの情報をビューに受け渡すだけです。
+      # def show
+      #   @tweet = Tweet.find(params[:id])
+      # end
+
+      # https://master.tech-camp.in/v2/curriculums/4218
+      #       tweetsコントローラーにdestroyアクションを定義します。
+      # ツイートを削除する際にはモデルのdestroyメソッドを使いましょう。
+
+      # また、どのツイートを削除するのかを特定する場合はparams[:id]を使用して、削除したいツイートの情報を取得します。
+      # このときのparams[:id]は、先ほどPrefixで指定したパスであるtweet_path(tweet.id)のtweet.idにあたる数字が入ります。
+      # 処理の流れとしては、以下のようになります。
+      # まず、パラメータとして受け取ったparams[:id]をもとに、削除したいツイートをfindメソッドを用いて取得します。
+      # 続いて、そのツイートをdestroyメソッドで削除します。
+
+      # 削除機能の実装を行いました。以下の実装の流れを再度確認しておきましょう。
+
+        # ツイートを削除するためのルーティングを設定する
+        # 削除ボタンをビューに追加する
+        # destroyアクションをコントローラーに定義する
+        # 削除後のビューを追加する
+
+
   end
 
   private

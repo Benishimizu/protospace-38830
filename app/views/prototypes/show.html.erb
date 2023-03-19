@@ -10,9 +10,54 @@
 
       <%# プロトタイプの投稿者とログインしているユーザーが同じであれば以下を表示する %>
         <div class="prototype__manage">
+        <% if user_signed_in? && current_user == @prototype.user%>
+       <%# 
+          <% if current_user == @prototype.user%#>
+          :これでもOK
+          今回はUSER_SIGN_INがなくてもINDEXでSIGN INをしている状態なので特に必要ない（特例）
+          <% if user_signed_in?  && current_user.id == tweet.user_id %＃>
+          ：current_user.id でIDを聞いてるから tweet.user_id　とIDをつける
+          https://master.tech-camp.in/v2/curriculums/4224
+          要点チェック[ログイン中のユーザー情報取得]
+            user_signed_in?は、ユーザーがログインしているか否かを判断できるdeviseが用意しているメソッドのこと
+            current_userは、ログインをしているユーザーの情報が取得できるdeviseが用意しているメソッドのこと
+              *「ユーザーがログインしている」かつ「投稿したユーザーである投稿だけに許可」という実装
+              current_user.id == tweet.user_idと記述することで、「現在ログインしているユーザー」と「ツイートを投稿したユーザー」が同じか否かを判定することができます。
+              この場合のtweet.user_idという記述は、tweetとuserのアソシエーションによって成立しています。
+              また、if文中に複数の条件を定義する際に、論理演算子&&を用いていることも確認しておきましょう。
+              &&は論理演算子の1つです。条件A && 条件Bとなっていた場合、条件Aと条件Bが共に真の場合のみtrueが返され、その後の処理が実行されます。
+              反対に、条件Aと条件Bのどちらか、または双方が偽であった場合はfalseが返されることも覚えておきましょう。
+              current_user.id == @tweet.user_idという条件を含むif文で、プルダウンメニューごと囲むことによって、「未ログイン時や自分の投稿ではないときは非表示」となるように書き換えました。
+
+              https://master.tech-camp.in/v2/curriculums/5194
+              目的
+                ユーザーがログインしている場合とログインしていない場合で表示を変える方法を理解すること
+                「ツイートを投稿したユーザーのみ」という条件を追加する方法を理解すること
+                論理演算子（&&）の使い方を理解すること
+                 問題1：ユーザーがログインしている場合のみ、ツイートの中に「編集」と「削除」が表示されるように実装しましょう
+                    編集するファイルは以下の2つです
+                    ・/tweets/index.html.erb
+                    ・/tweets/show.html.erb
+                https://master.tech-camp.in/v2/curriculums/5269
+                  A.views/tweets/index.html.erbに          <% if user_signed_in? %＃><%end%#>を書く
+                  views/tweets/show.html.erbも<% if user_signed_in? %＃><%end%#>を書く
+                  問題2：投稿者本人のみ、「編集」と「削除」が表示されるように変更しましょう
+                  問題1で設定した条件では、他のユーザーにも、自分が投稿したツイートの「編集」と「削除」が表示されてしまいます。
+                  投稿者本人のみ、「編集」と「削除」が表示されるように変更しましょう。なお、「詳細」は変わらずどのユーザーにも表示されるようにします。
+                  A.views/tweets/index.html.erbと     views/tweets/show.html.erbも<% if user_signed_in? %＃>を編集して
+                  <% if user_signed_in?  && current_user.id == tweet.user_id %#>書く
+
+
+
+
+       %>
           <%= link_to "編集する", root_path, class: :prototype__btn %>
           <%= link_to "削除する", root_path, class: :prototype__btn %>
+          <%# <%= link_to "編集する", root_path, class: :prototype__btn %#> %>
+          <%# <%= link_to "削除する", root_path, class: :prototype__btn %#>  %>
+          
         </div>
+        <% end %>
       <%# // プロトタイプの投稿者とログインしているユーザーが同じであれば上記を表示する %>
       <div class="prototype__image">
         <%= image_tag @prototype.image %>
@@ -36,6 +81,7 @@
         </div>
       </div>
       <div class="prototype__comments">
+           <% if user_signed_in? %>
         <%# ログインしているユーザーには以下のコメント投稿フォームを表示する %>
           <%# <%= form_with model: モデル名,local: true do |f|%>
             <div class="field">
@@ -47,6 +93,7 @@
             </div>
           <%# <% end %>
         <%# // ログインしているユーザーには上記を表示する %>
+          <% end %>
         <ul class="comments_lists">
           <%# 投稿に紐づくコメントを一覧する処理を記述する %>
             <li class="comments_list">
