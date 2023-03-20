@@ -8,10 +8,10 @@
       <%= link_to "by #{@prototype.user.name}", root_path, class: :prototype__user %>
       <%# <%= link_to "by プロトタイプの投稿者", root_path, class: :prototype__user %#> %>
 
-      <%# プロトタイプの投稿者とログインしているユーザーが同じであれば以下を表示する %>
+    <%# プロトタイプの投稿者とログインしているユーザーが同じであれば以下を表示する %>
         <div class="prototype__manage">
         <% if user_signed_in? && current_user == @prototype.user%>
-       <%# 
+       <%# MEMO
           <% if current_user == @prototype.user%#>
           :これでもOK
           今回はUSER_SIGN_INがなくてもINDEXでSIGN INをしている状態なので特に必要ない（特例）
@@ -50,8 +50,78 @@
 
 
 
-       %>
-          <%= link_to "編集する", root_path, class: :prototype__btn %>
+    %>
+          <%= link_to "編集する", edit_prototype_path(@prototype), class: :prototype__btn %>
+    <%# MEMO２
+          https://master.tech-camp.in/v2/curriculums/4219
+
+          編集ボタンを投稿一覧に追加しよう
+            編集画面に遷移するための、ボタンを作成します。
+            編集ボタンは、削除ボタンの上へ表示されるようにします。
+            また、削除ボタンと同じように、link_toメソッドを使用します。
+
+            編集画面へ遷移するパスには、tweetのidをパラメーターとして設定しましょう。
+            destroyメソッドの時と同様に遷移先がツイートごとに異なるためです。
+
+            index.html.erbを編集
+
+
+            他のカリキュラムにある
+            （https://master.tech-camp.in/v2/curriculums/7090）
+            【例】リンク先をURLで指定する場合
+            <%= link_to 'リンクに表示する文字', 'リンク先のURL' %＃>
+            【例】リンク先をパスで指定する場合
+            <%= link_to 'リンクに表示する文字', 'パス', method: :HTTPメソッド %＃>
+
+            link_toメソッドでパスを指定する場合、何も指定しなければデフォルトでGETメソッドが設定されます。
+            したがって、GETメソッドの指定を省略して記述することができます。
+            他カリキュラム：https://master.tech-camp.in/v2/curriculums/4218
+            index.html.erbを編集しましょう
+              次にlink_toメソッドを使用して、削除ボタンを追加しましょう。
+              削除ボタンはツイートの表示画面の右上に配置します。
+
+              削除するツイートを区別するために、削除ボタンのパスにはツイートのidをパラメーターとして持たせましょう。
+              具体的には/tweets/《tweetのid》というパスにすると、パラメーターとして受け取ることができます。
+
+          ■ご質問内容①
+
+
+          ・METHOD（GETやDELETE）を書くとき
+          ・class: :prototype__btnを書くとき
+          上記の違いはそれぞれどのようなものでしょうか？　
+          ■回答①
+
+
+          ・METHOD（GETやDELETE）を書くとき
+
+
+          こちらに関しては、植田様のご認識通り
+          指定したいパスのMETHODが「GETメソッド」である場合、省略可能。
+          反対に「GETメソッド以外（POSTやDELETE）」である場合は、指定が必要となります。
+          ・class: :prototype__btnを書くとき
+
+
+          こちらは、クラス名であることから
+          cssで装飾をつけたい場合に記述するものとなります。
+          したがって、装飾をつける必要がない場合は「class: :◯◯」が不要です。
+          ■ご質問内容②
+
+
+          edit_tweet_path(tweet.id)の引数は、棚の取手のような認識でよろしいでしょうか？
+          ■回答②
+
+
+          「それぞれのツイートのIDが表示されるようにPrefixの引数として渡すようにしている」を詳しくご説明すると、
+          「idが何番のツイートを編集するのか」の"何番"に該当する部分を教えてあげている ということであり、
+
+          棚を例に挙げると、
+          取り出したいお皿が"何段目"の棚にあるかを教えてあげる役割を担っております。
+          → 何段目かがわからない状態ですと、お皿を見つけ出すことができない状態。
+               
+
+    %>
+
+
           <%= link_to "削除する", root_path, class: :prototype__btn %>
           <%# <%= link_to "編集する", root_path, class: :prototype__btn %#> %>
           <%# <%= link_to "削除する", root_path, class: :prototype__btn %#>  %>
