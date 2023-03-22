@@ -45,8 +45,6 @@ class Prototype < ApplicationRecord
               validates :concept, presence: true
               validates :image, presence: true
               # validates :image, presence
-
-
 #               validatesバリデーツメソッド
               # validatesとは、バリデーションを設定する時に使用するメソッドです。
 
@@ -57,6 +55,7 @@ class Prototype < ApplicationRecord
               # このバリデーションを設けることで、名前が空欄の時データベースに保存できなくなります。
               # つまり、値を必ず入れなければいけません。
               # もし、空欄で登録しようとすると、エラーが発生します。
+# 
 
  #           Bin//今回は画像がないと投稿できないので下記コードは不要
               # validates :concept, presence: true, unless: :was_attached?
@@ -65,7 +64,9 @@ class Prototype < ApplicationRecord
               #   self.image.attached?
               # end
               # https://master.tech-camp.in/v2/curriculums/4763
+# 
+  has_many :comment
 
 
 
-end
+            end

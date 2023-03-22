@@ -19,4 +19,8 @@ class User < ApplicationRecord
     #  この状態のことをhas manyの関係といい、今回の場合は「User has many Tweets」の状態であると言えます。
     #  この関連付けをするため、userと他のモデルとの間に「1対多」のつながりがあることを示すのがhas_manyメソッドです。
       # https://master.tech-camp.in/v2/curriculums/4223#7
+
+  has_many :comment  # commentsテーブルとのアソシエーション
+  # https://master.tech-camp.in/v2/curriculums/4227
+
 end
