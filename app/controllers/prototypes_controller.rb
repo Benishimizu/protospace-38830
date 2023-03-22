@@ -303,7 +303,10 @@ class PrototypesController < ApplicationController
       # つまり、以下のようにform_withで使用する@tweetを中身が入った状態にしておくということです。
   end
 
-
+  def destroy
+    # tweet = Tweet.find(params[:id])
+    # tweet.destroy
+  end
 
   private
 
