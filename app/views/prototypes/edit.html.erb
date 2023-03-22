@@ -3,6 +3,19 @@
     <div class="form__wrapper">
       <h2 class="page-heading">プロトタイプ編集</h2>
       <%# 部分テンプレートでフォームを表示する %>
+          <%# <%= render partial: 'prototype', collection: @prototype %＃> %>
+          <%= render partial: "form", locals: { prototype: @prototype } %>
+          <%# 
+          COLLECTION（OPTION）：配列（＠prototypes)の中の数だけ読み込んで表示
+          　EACH METHODみたいな
+
+
+          LOCAL：直前に定義した＠prototypeを使って
+          PROTOTYPEという変数に置き換える必要があるので
+          今回はLOCAL出ないといけない
+           %>
+
+      
     </div>
   </div>
 </div>

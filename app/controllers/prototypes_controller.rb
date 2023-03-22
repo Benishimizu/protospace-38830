@@ -13,7 +13,16 @@ class PrototypesController < ApplicationController
             # @message = @room.messages.new(message_params)
 # 
     @prototype = Prototype.new(prototype_params)
-    #  @prototype = モデル名[今回はPrototype.rbの１番目の文章のPrototypeに該当].new(prototype_params[44行目のものに該当])
+    # 
+        #  @prototype = モデル名[今回はPrototype.rbの１番目の文章のPrototypeに該当].new(prototype_params[一番下のものに該当])
+        # (prototype_params)がないと空データのままの保存になってしまうため、　(prototype_params)を引数にする必要がある
+        # Prototype.new(prototype_params)と書いているのは、SAVE METHODに引数を受け取れないから
+        # SAVE METHODO: 保存できたらTRUE、できなかったらFALSEを返してくれるからIF文が使えることができるー＞条件分岐をつけたい時ーなので@prototype.saveを使う
+          #　補足： CREATE METHODO : TRUE false を返してくれない＝＞条件分岐がなくて、保存したい時だけ→@prototype.create/　NOT NEEDED
+
+
+    # 
+
     if @prototype.save
       redirect_to root_path
     else
@@ -140,11 +149,158 @@ class PrototypesController < ApplicationController
   end
 
   def update
+    @prototype = Prototype.find(params[:id])
+    # 解説
+      # @prototype.update
+      # PROTO TYPEモデルにFINDメソッドを使ってデータを探す
+      # 出てきたものを@prototypeに代入
+    # 
+
+    # Original Answer
+      # if @prototype.update(prototype_params)
+      #   redirect_to root_path(@prototype)
+      # else
+      #   render :edit
+      # end
+
+    if @prototype.update(prototype_params)
+      # 解説
+        # if 
+        # @prototype.update：＠ptorotypeを更新します
+        # (prototype_params)：この情報をもとに　・・PRIVATE METHODのした（つまりこのファイルの下にある、”def prototype_params〜”）を元に作成
+        # UPDATEMETHODだけ引数を受け取レルから　＆
+        # UPDATE METHODは保存できたらTRUE、できなかったらFALSEを返してくれるからIF文が使えることができる
+      # 
+      redirect_to prototype_path(@prototype)
+          # redirect_to root_path(@prototype)
+      # 
+        # redirect_to ; どこの部屋に行きたいか示さないといけないから引数をつける
+        #  root_path：トップページ：
+        # ->redirect_to root_path だと引数を指定してあげなくてもOK
+
+        # ただし、/prototypes/:id(.:format)のように　:idと書いてあるものは引数が必要
+          # ※上記の@prototype.update(prototype_params)の引数とは全く無関係：保存の時の引数
+          # 今回は　 redirect_to　：はROOTING
+          # 判断基準としては、今回RAILS ROUTESをしたときに　”/prototypes/:id(.:format)”と書いてあったので、引数の（@prototyoe)が必要
+            # [1] validates :name, presence: trueの書き方について
+                  # https://master.tech-camp.in/v2/curriculums/4847
+                  # のカリキュラムを見ています。
+                  # 解説で下記のように書かれています。
+                  # ーーーーーーーーー
+                  # Userモデルに、validates :name, presence: trueを追記します。
+                  # 「name」カラムに、presence: trueを設けることで、空の場合はDBに保存しないというバリデーションを設定しています。
+                  # つまり、ユーザー登録時に「name」を空欄にして登録しようとすると、エラーが発生します。
+                  # ーーーーーーー
+                  # https://master.tech-camp.in/v2/curriculums/4223
+                  # を見ていると『「空ではないか」というpresence: trueのバリデーションを設ける必要はありません。』
+                  # と書いてある文があり具体的に必要な時と必要でない時はどのように見極めたら良いでしょうか？
+
+
+                  # また、https://master.tech-camp.in/v2/curriculums/5291#7
+                  # のコーディングをしているのですが、作業チェックの１つで
+                  # 「 バリデーションによって更新ができず編集ページへ戻ってきた場合でも、入力済みの項目（画像以外）は消えないことを確認した」
+                  # とあり、特にエラーは起きていないのですが、PRECENSE： TRUEのTRUEを取手しまうとエラーが出てしまいました。
+                  # そのため、今回の時も関係あるか伺いたいです。
+            # Answer
+              # [1]validates :name, presence: trueの書き方について
+              # 『「空ではないか」というpresence: trueのバリデーションを設ける必要はありません。』と書いてある文があり具体的に必要な時と必要でない時はどのように見極めたら良いでしょうか？
+
+              # 基本的に「空では保存したくないカラム」はpresence: trueをつけていただけたらと存じます。
+              # ただし、RailsやGemなどで、空では保存できないように既になっているものもあります。
+              # 例えば、アソシエーションを組んでいる場合の外部キーカラム（Railsがチェックしてくれています）や、deviseを使用したときのemailカラム・passwordカラムなどです。（deviseがemailカラム・passwordカラムが入力されていないと保存できないようにしてくれています）
+              # このように、既に他のコードがpresence: trueを実現している場合は、こちらでpresence: trueを記述する必要はありません。
+
+
+              # また、エラーに関しましては、上記内容とは異なる原因かと存じます。
+              # エラー内容をご確認いただき、修正いただけたらと存じます。
+
+            
+
+            # [2]
+            # 現在、下記の
+            # https://master.tech-camp.in/v2/curriculums/5291#7
+            # 『updateアクションにデータを更新する記述をし、更新されたときはそのプロトタイプの詳細ページに戻るような記述をした
+            # updateアクションに、データが更新されなかったときは、編集ページに戻るようにrenderを用いて記述した』
+            # に取り組んでいます。
+                #     @prototype = Prototype.find(params[:id])
+                #     if @prototype.update
+                #       redirect_to root_path
+                #     else
+                #       render :edit
+                #     end
+            # 今上記のコーディングを
+            # [ https://master.tech-camp.in/v2/curriculums/4219 ]を元にしたのですが、エラーが起きています。
+            # そのため、[ https://master.tech-camp.in/v2/curriculums/4220]を元に　(prototype_params)を付け加えたのですが、これが必要な時とそうでないときの違いとはどのようなものになりますでしょうか？
+                #     @prototype = Prototype.find(params[:id])
+
+                #     if @prototype.update(prototype_params)
+                #       redirect_to root_path
+                #     else
+                #       render :edit
+                #     end
+
+            # [2]Answer
+                  # (prototype_params)を付け加えたのですが、これが必要な時とそうでないときの違いとはどのようなものになりますでしょうか？
+                  # prototype_paramsは、ストロングパラメータのメソッドかと存じます。
+                  # ストロングパラメータは、クライアントから送られてきているデータであるparamsから、保存に必要な処理を取得する処理をおこなっています。
+                  # よって保存に必要な処理を取得し、そのデータを保存したり更新したりする場合に必要になってきます。
+                  # @prototype.update(prototype_params)
+                  # ↑こちらのコードは、「@prototypeのデータを、prototype_paramsで取得したデータで更新する」といった記述となります。
+            # [3] [2]の続きになります
+              # 上記のコードでまだエラーが起きたので、
+              # https://master.tech-camp.in/v2/curriculums/4862
+              # を参考にしてredirect_to root_path(@prototype) と修正しました。
+                    #  @prototype = Prototype.find(params[:id])
+                    #     if @prototype.update(prototype_params)
+                    #       redirect_to root_path(@prototype)
+                    #     else
+                    #       render :edit
+                    #     end
+                # ただ、https://master.tech-camp.in/v2/curriculums/4862　の中のコーディングについて教えてほしいです。
+                    #   if @message.save
+                    #       redirect_to room_messages_path(@room)
+                    #     else
+                    #       render :index
+                    #     end
+                    # redirect_to room_messages_path(@room)　とredirect_to oom_messages_pathの違いはどのようになりますでしょうか？
+                  # 一応https://master.tech-camp.in/v2/curriculums/4711　とかは見てみたのですが、解説がなくすみませんが教えていただけると助かります
+
+            # [3]Answer
+                  # redirect_to room_messages_path(@room)　とredirect_to oom_messages_pathの違いはどのようになりますでしょうか？
+                  # 〇〇_pathの後ろに、(@room)をつける場合とつけない場合があり、この違いについて知りたい、ということでよろしかったでしょうか。
+                  # rails routesでルーティングを確認したとき、URI Patternに「:id」や「:room_id」など、id値を含む場合に記述が必要となります。
+                  # （ただし、遷移前のURLと遷移後のURLに同じid値が当てはまる場合は、バスの後ろの引数の記述は省略することが可能です）
+          # 
+    else
+      render :edit
+    end
+
+    # Answer
+        # if @prototype.update(prototype_params)
+        #   redirect_to prototype_path(@prototype)
+        # else
+        #   render :edit
+        # end
+
+
+    # https://master.tech-camp.in/v2/curriculums/4219
+      # tweet = Tweet.find(params[:id])
+      # tweet.update(tweet_params)
 
   end
 
   def edit
+    @prototype = Prototype.find(params[:id])
+    # https://master.tech-camp.in/v2/curriculums/4219
+    # editアクションをコントローラーに定義しよう
+      # tweetsコントローラーにeditアクションを定義しましょう。
 
+      # 現在実装している「編集して更新（edit→update）」という処理の流れは、「入力して新規投稿（new→create）」という流れと似ています。
+
+      # 新規投稿時と異なる点は、編集→更新の場合はすでに存在しているレコードを選択して中身を書き換えるという点です。
+      # そのため、editアクションでは編集したいレコードを@tweetに代入し、ビューに受け渡すことで編集画面で利用できるようにします。
+
+      # つまり、以下のようにform_withで使用する@tweetを中身が入った状態にしておくということです。
   end
 
 
