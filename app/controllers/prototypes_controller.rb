@@ -181,7 +181,7 @@ class PrototypesController < ApplicationController
         # ただし、/prototypes/:id(.:format)のように　:idと書いてあるものは引数が必要
           # ※上記の@prototype.update(prototype_params)の引数とは全く無関係：保存の時の引数
           # 今回は　 redirect_to　：はROOTING
-          # 判断基準としては、今回RAILS ROUTESをしたときに　”/prototypes/:id(.:format)”と書いてあったので、引数の（@prototyoe)が必要
+          # 判断基準としては、今回RAILS ROUTESをしたときに　”/prototypes/:id(.:format)”と書いてあったので、引数の（@prototype)が必要
             # [1] validates :name, presence: trueの書き方について
                   # https://master.tech-camp.in/v2/curriculums/4847
                   # のカリキュラムを見ています。
@@ -304,8 +304,12 @@ class PrototypesController < ApplicationController
   end
 
   def destroy
-    # tweet = Tweet.find(params[:id])
-    # tweet.destroy
+    @prototype = Prototype.find(params[:id])
+    if @prototype.destroy
+      redirect_to root_path
+    else
+      redirect_to root_path
+    end
   end
 
   private
