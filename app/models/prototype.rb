@@ -65,8 +65,9 @@ class Prototype < ApplicationRecord
               # end
               # https://master.tech-camp.in/v2/curriculums/4763
 # 
-  has_many :comment
-
+  has_many :comments# commentsテーブルとのアソシエーション
+#  tweet.rbを編集しましょう
+# ツイートは、複数のコメントを所有することができるので、has_many :モデル複数形と記述することで、アソシエーションを組みます。
 
 
             end

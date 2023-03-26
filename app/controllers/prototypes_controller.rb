@@ -155,7 +155,15 @@ class PrototypesController < ApplicationController
     @comment = Comment.new
     #  prototypesコントローラーのshowアクションに、@commentというインスタンス変数を定義し、Commentモデルの新規オブジェクトを代入した
       # VIEWを管理するSHOW .HTML.ERBで@commentと定義している変数と合わせてあげるため
-    # @comments = @prototype.comments
+    @comments = @prototype.comments
+      # 
+          #tweets/show.html.erbでform_withを使用して、comments#createを実行するリクエストを飛ばしたいので、@comment = Comment.newというインスタンス変数を生成しておかないといけません。
+
+          # tweetsテーブルとcommentsテーブルはアソシエーションが組まれているので、@tweet.commentsとすることで、@tweetへ投稿されたすべてのコメントを取得できます。
+
+          # また、ビューでは誰のコメントか明らかにするため、アソシエーションを使ってユーザーのレコードを取得する処理を繰り返します。
+          # そのときに「N+1問題」が発生してしまうので、includesメソッドを使って、N+1問題を解決している点にも注意してください。
+      # 
   end
 
   def update

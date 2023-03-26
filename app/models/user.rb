@@ -20,7 +20,7 @@ class User < ApplicationRecord
     #  この関連付けをするため、userと他のモデルとの間に「1対多」のつながりがあることを示すのがhas_manyメソッドです。
       # https://master.tech-camp.in/v2/curriculums/4223#7
 
-  has_many :comment  # commentsテーブルとのアソシエーション
+  has_many :comments  # commentsテーブルとのアソシエーション
   # https://master.tech-camp.in/v2/curriculums/4227
 
 end

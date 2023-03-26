@@ -18,7 +18,7 @@ class CommentsController < ApplicationController
 
     else
       @prototype = @comment.prototype
-      # @comments = @prototype.comments
+      @comments = @prototype.comments
       # @prototype = @comment.prototype
         # // RENDERはviewに関連するからSHOWアクションと同じ定義をする必要がある
         # Prototypes_ControllerのSHOW を参考にすると@prototype と@commentsが定義されている

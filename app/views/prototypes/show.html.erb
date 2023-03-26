@@ -193,11 +193,26 @@
       <% end %>
         <ul class="comments_lists">
           <%# 投稿に紐づくコメントを一覧する処理を記述する %>
+          <% @comments.each do |comment| %>
+          <%# 
+            @commentsには複数のコメントのレコードが入っているので、配列の形をとっています。
+            そのため、ビューに表示させるためにはeachメソッドを使って、ひとつひとつのレコードに分解してから表示させます。
+
+            また、コメントしたユーザーの名前をクリックしたら、そのユーザーのマイページへ遷移するようにします。そのために、名前のところへlink_toメソッドを使ってリンクを作りました（リンクはまだクリックしないようにしましょう。）
+
+            ユーザーのidはcomment.user_idとパスに記述することで、コメントを投稿したユーザーのidをparamsで扱えるようにしてます。
+           %>
+
             <li class="comments_list">
               <%# <%= " コメントのテキスト "%>
+               <%= comment.content%>
               <%# <%= link_to "（ ユーザー名 ）", root_path, class: :comment_user %>
+              <%  link_to "（ #{comment.user.name} ）", root_path, class: :comment_user %>
+
             </li>
           <%# // 投稿に紐づくコメントを一覧する処理を記述する %>
+          <% end %>
+
         </ul>
       </div>
     </div>
