@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   resources :prototypes, only: [:destroy, :update, :edit, :show, :index, :create, :new] do
     resources :comments, only: [:create]
+    resources :users, only: :show
   end
   # resources :comments, only: :create
     # 上記でも大丈夫だが、かっこ　がある方が編集しやすい
@@ -52,6 +53,21 @@ Rails.application.routes.draw do
           # まとめると、ルーティングをネストさせる一番の理由は、アソシエーション先のレコードのidをparamsに追加してコントローラーに送るためです。
 
           # 今回の実装だと、コメントと結びつくツイートのidをparamsに追加します。
+          # -ユーザーに関するshowアクションのルーティングを設定しよう------
+          # マイページを表示する際にはusersコントローラーのshowアクションを動かせるようにルーティングを設定しましょう。
+
+          #  routes.rbを以下のように編集しましょう
+          #  config/routes.rb
+          #  Rails.application.routes.draw do
+          #    devise_for :users
+          #    root to: 'tweets#index'
+          #    resources :tweets
+          #    resources :users, only: :show
+          #  end
+          #  これで、/users/:idのパスでリクエストした際にusers_controller.rbのshowアクションを実行するルーティングが設定できました。
+          # 【例】
+            # Prefix   Verb   URI Pattern             Controller#Action
+            # user     GET    /users/:id(.:format)    users#show
   # 
 
 end
