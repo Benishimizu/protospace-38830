@@ -155,19 +155,42 @@
         </div>
       </div>
       <div class="prototype__comments">
-           <% if user_signed_in? %>
+      <% if user_signed_in? %>
         <%# ログインしているユーザーには以下のコメント投稿フォームを表示する %>
-          <%# <%= form_with model: モデル名,local: true do |f|%>
+          <%= form_with model: [@prototype, @comment],local: true do |f|%>
+                    <%# <%= form_with model: モデル名,local: true do |f|%#> %>
             <div class="field">
+              <%= f.label :content, "コメント" %><br />
+              <%= f.text_field :content, id:"comment_content" %>
               <%# <%= f.label :hoge, "コメント" %><br />
               <%# <%= f.text_field :hoge, id:"comment_content" %>
+            <%# MEMO
+              基本的には<%= f. と<%= form.は書き方が違うだけで同じ意味
+              例1]
+                    <%= form_with(model: [@tweet, @comment], local: true) do |form| %#>
+                    <%= form.text_area :text, placeholder: "コメントする", rows: "2" %#>
+                    <%= form.submit "SEND" %#>
+
+                      |form|となっているため<%= form.となる
+                      text_area・・形式
+                      :text,・・カラム名と同じにする必要がある
+
+              例2]
+                      <%= form_with model: モデル名,local: true do |f|%#>
+                      <%# <%= f.label :hoge, "コメント" %#><br />
+                      <%# <%= f.text_field :hoge, id:"comment_content" %#>
+                      |f|となっているため<%= f.になる
+                      今回の場合はcomments　テーブルの　内容つまりcontentと紐づける必要があるーー＞
+                      <%= f.label :content,になる
+                      label ・・・形式
+            %>
             </div>
             <div class="actions">
-              <%# <%= f.submit "送信する", class: :form__btn  %>
+              <%= f.submit "送信する", class: :form__btn %>
             </div>
-          <%# <% end %>
+           <% end %>
         <%# // ログインしているユーザーには上記を表示する %>
-          <% end %>
+      <% end %>
         <ul class="comments_lists">
           <%# 投稿に紐づくコメントを一覧する処理を記述する %>
             <li class="comments_list">

@@ -18,7 +18,9 @@ class PrototypesController < ApplicationController
         # (prototype_params)がないと空データのままの保存になってしまうため、　(prototype_params)を引数にする必要がある
         # Prototype.new(prototype_params)と書いているのは、SAVE METHODに引数を受け取れないから
         # SAVE METHODO: 保存できたらTRUE、できなかったらFALSEを返してくれるからIF文が使えることができるー＞条件分岐をつけたい時ーなので@prototype.saveを使う
+        # SAVE METHODOは役割：saveするだけなのでNEWの適用が必要になる
           #　補足： CREATE METHODO : TRUE false を返してくれない＝＞条件分岐がなくて、保存したい時だけ→@prototype.create/　NOT NEEDED
+          # CREATE METHODO :NEW＋SAVE
 
 
     # 
@@ -118,34 +120,42 @@ class PrototypesController < ApplicationController
 
   def show
     @prototype = Prototype.find(params[:id])
+
     # https://master.tech-camp.in/v2/curriculums/4220#8
-      #     showアクションをコントローラーに定義しよう
-      # 次は、ツイート詳細画面に必要な情報を、データベースから取得するためにshowアクションを定義しましょう。
+        #     showアクションをコントローラーに定義しよう
+        # 次は、ツイート詳細画面に必要な情報を、データベースから取得するためにshowアクションを定義しましょう。
 
-      # tweets_controller.rbを編集しましょう
-      # showアクションでは、詳細を表示したいツイートの情報をビューに受け渡すだけです。
-      # def show
-      #   @tweet = Tweet.find(params[:id])
-      # end
+        # tweets_controller.rbを編集しましょう
+        # showアクションでは、詳細を表示したいツイートの情報をビューに受け渡すだけです。
+        # def show
+        #   @tweet = Tweet.find(params[:id])
+        # end
 
-      # https://master.tech-camp.in/v2/curriculums/4218
-      #       tweetsコントローラーにdestroyアクションを定義します。
-      # ツイートを削除する際にはモデルのdestroyメソッドを使いましょう。
+        # https://master.tech-camp.in/v2/curriculums/4218
+        #       tweetsコントローラーにdestroyアクションを定義します。
+        # ツイートを削除する際にはモデルのdestroyメソッドを使いましょう。
 
-      # また、どのツイートを削除するのかを特定する場合はparams[:id]を使用して、削除したいツイートの情報を取得します。
-      # このときのparams[:id]は、先ほどPrefixで指定したパスであるtweet_path(tweet.id)のtweet.idにあたる数字が入ります。
-      # 処理の流れとしては、以下のようになります。
-      # まず、パラメータとして受け取ったparams[:id]をもとに、削除したいツイートをfindメソッドを用いて取得します。
-      # 続いて、そのツイートをdestroyメソッドで削除します。
+        # また、どのツイートを削除するのかを特定する場合はparams[:id]を使用して、削除したいツイートの情報を取得します。
+        # このときのparams[:id]は、先ほどPrefixで指定したパスであるtweet_path(tweet.id)のtweet.idにあたる数字が入ります。
+        # 処理の流れとしては、以下のようになります。
+        # まず、パラメータとして受け取ったparams[:id]をもとに、削除したいツイートをfindメソッドを用いて取得します。
+        # 続いて、そのツイートをdestroyメソッドで削除します。
 
-      # 削除機能の実装を行いました。以下の実装の流れを再度確認しておきましょう。
+        # 削除機能の実装を行いました。以下の実装の流れを再度確認しておきましょう。
 
-        # ツイートを削除するためのルーティングを設定する
-        # 削除ボタンをビューに追加する
-        # destroyアクションをコントローラーに定義する
-        # 削除後のビューを追加する
+          # ツイートを削除するためのルーティングを設定する
+          # 削除ボタンをビューに追加する
+          # destroyアクションをコントローラーに定義する
+          # 削除後のビューを追加する
 
-
+        # @comments = Comment.new
+        # prototypesコントローラーのshowアクションに、@commentというインスタンス変数を定義し、Commentモデルの新規オブジェクトを代入した
+        # なので上記は間違え
+    # Answer
+    @comment = Comment.new
+    #  prototypesコントローラーのshowアクションに、@commentというインスタンス変数を定義し、Commentモデルの新規オブジェクトを代入した
+      # VIEWを管理するSHOW .HTML.ERBで@commentと定義している変数と合わせてあげるため
+    # @comments = @prototype.comments
   end
 
   def update
