@@ -5,7 +5,18 @@
     <%# ログインしているときは以下を表示する %>
       <div class="greeting"> 
         <%= "こんにちは、" %>
-        <%=  link_to "ユーザー名さん", root_path, class: :greeting__link%>
+        <%=  link_to "ユーザー名さん", user_path(current_user), class: :greeting__link%>
+          <%# <%=  link_to "ユーザー名さん", root_path, class: :greeting__link%＃> %>
+          <%# 
+            ユーザー名には、current_user.nicknameとすることで現在ログインしているニックネームを表示できます。
+
+            マイページへのリンクは、/users/:idと指定します。
+            :idの部分には表示したいユーザーのidを入れる必要がありますが、今回はマイページ、つまりログイン中のユーザーのページなので、current_user.idとします。
+
+            これでユーザー名にマウスを重ねるとプルダウンで表示されるマイページへのリンクが作られました。 
+            %>
+
+        
        </div>
        <% end %>
      <%# // ログインしているときは上記を表示する %>

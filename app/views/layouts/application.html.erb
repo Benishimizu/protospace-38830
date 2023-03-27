@@ -25,7 +25,7 @@
              </div>
            <%# // ログインしているときは上記を表示するようにしましょう %>
 
-<%# 
+      <%# 
              <%#  Memo
 
           #          <% if user_signed_in? %=>
@@ -43,13 +43,9 @@
              <%= link_to "新規登録", new_user_registration_path, class: "post" %=>
            </div>
            <% end%=>
- %>
+      %>
 
-
-
-
-
-           <%# ログインしていないときは以下を表示するようにしましょう %=> %>
+        <%# ログインしていないときは以下を表示するようにしましょう %=> %>
           <% else %>
             <div class="nav__right">
               <%= link_to "ログイン", new_user_session_path, class: :nav__btn %>

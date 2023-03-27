@@ -10,8 +10,8 @@ Rails.application.routes.draw do
 
   resources :prototypes, only: [:destroy, :update, :edit, :show, :index, :create, :new] do
     resources :comments, only: [:create]
-    resources :users, only: :show
   end
+  resources :users, only: [:show]
   # resources :comments, only: :create
     # 上記でも大丈夫だが、かっこ　がある方が編集しやすい
       # resources :images, only: :index
@@ -68,6 +68,19 @@ Rails.application.routes.draw do
           # 【例】
             # Prefix   Verb   URI Pattern             Controller#Action
             # user     GET    /users/:id(.:format)    users#show
+          # False
+          # prototype_user GET    /prototypes/:prototype_id/users/:id(.:format)                                            users#show
+          # ネストをしたなかにコーディングをしてしまうと１行上のような内容になり、ルーティングがうまくできないことがある。
+          # なのでネストをしていないところに書くことを気をつけなければいけない
+          # ７つのアクション
+          # アクション名	内容
+              # index	一覧表示：トップページ
+              # show	詳細表示：詳細ページ
+              # new	生成：新規登録ページ
+              # create	保存：保存してや投稿完了のページ
+              # edit	編集：編集ページ
+              # update	更新：更新した後
+              # destroy	削除：削除した後もしくは削除ページ
   # 
 
 end

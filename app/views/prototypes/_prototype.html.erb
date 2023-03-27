@@ -65,7 +65,9 @@
       <%= prototype.catch_copy %>
             <%# <%= "プロトタイプのキャッチコピー" %#> %>
     </p>
-    <%= link_to "by #{prototype.user.name}", root_path, class: :card__user %>
+    <%= link_to "by #{prototype.user.name}", user_path(current_user), class: :card__user %>
+          <%# <%= link_to "by #{prototype.user.name}", root_path, class: :card__user %#> %>
+
         <%# <%= link_to "by プロトタイプの投稿者名", root_path, class: :card__user %#> %>
   </div>  
 </div>
