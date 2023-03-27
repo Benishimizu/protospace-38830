@@ -69,5 +69,39 @@
           <%# <%= link_to "by #{prototype.user.name}", root_path, class: :card__user %#> %>
 
         <%# <%= link_to "by プロトタイプの投稿者名", root_path, class: :card__user %#> %>
+
+
+
+        <%# 
+         collectionコレクションオプション
+          collectionオプションは、指定したインスタンス変数の中にある要素の数だけ、部分テンプレートを繰り返し呼び出すことができるオプションです。
+          collectionオプションを使えば、繰り返し表示させたい要素がインスタンス変数に複数入っている場合でも、eachメソッドを使用せずにrenderで繰り返し表示できます。
+
+          以下はcollectionオプションを使用しない場合のコード例です。
+
+          【例】これまでに学習したコードの場合（@hogesには繰り返し表示させたい要素が複数入っている）
+
+            <% @hoges.each do |hoge|%#>
+              <%= render partial: 'hoge', locals: {hoge: hoge} %#>
+            <% end %#>
+            上記は以下の処理を行なっています。
+            1. @hogesに入っている要素を、hogeとして1つ取り出す
+            2. _hoge.html.erbという部分テンプレートを呼び出し、その部分テンプレート内では、取り出された1つのhogeという要素をhogeという名前で扱う設定をする
+            3. eachメソッドを使用しているので、1~2を@hogesに入っている要素の数だけ繰り返し行う
+
+            collectionオプションを使用すると、1行で同じ結果の処理を行うことができます。
+
+            【例】collectionオプションを使用した場合（@hogesには繰り返し表示させたい要素が複数入っている）
+            1
+            <%= render partial: 'hoge', collection: @hoges %#>
+            collectionオプションを使用する際のポイントとしては、複数要素が入っているインスタンス変数を、collectionオプションの対象に指定することです。
+            また、collectionオプションを使用した場合、呼び出した部分テンプレート内では、インスタンス変数から取り出した要素を、部分テンプレート名と同じ変数名で扱うことができます。
+            つまり、_hoge.html.erb内において、@hogesから取り出された1つ1つの要素はhogeとして扱うことができます。
+
+            それでは、collectionオプションを使用する形へビューを編集しましょう
+              
+              
+              
+         %>
   </div>  
 </div>
