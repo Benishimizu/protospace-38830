@@ -32,7 +32,145 @@ class PrototypesController < ApplicationController
       # 上記の場合、index、showアクション以外のアクションにリクエストがあったときのみauthenticate_user!メソッドが発動します。
       # つまり、記載されたコントローラーに7つのアクションが定義されているとすると、new,create,edit,update,destroyの⑤つのアクションの際にauthenticate_user!が動くということになります。
 
+      # 今回は未ログインユーザを別のパスへ転送するため、未ログインユーザを判別する必要があります。この判別には、user_signed_in?とunlessを用います。
 
+        #  unlessアンレス
+        #   ifと同様に、条件式の返り値で条件分岐して処理を実行するRubyの構文です。
+        #   ifは返り値がtrueのときにelseまでの処理が実行されますが、
+        #   unlessはfalseのときにelseまでの処理が実行されます。
+          
+        #   【例】unless
+        #   unless 条件式
+        #     # 条件式がfalseのときに実行する処理
+        #   end 
+        #   このunlessを用いて「ログインしているユーザーでない」ときの処理に、リダイレクトを設定しましょう。
+          
+        #   Railsではリダイレクト処理に、redirect_toメソッドを使用します。
+          
+        #    redirect_toリダイレクト トゥーメソッド
+        #   Railsでリダイレクト処理を行う際に使用するメソッドです。
+        #   コントローラー等での処理が終わった後、アクションに対応するビューファイルを参照せずに、別ページへリダイレクトさせることができます。
+          
+        #   書き方は以下の通りです。
+          
+        #   【例】redirect_to
+        #   redirect_to action: :リダイレクト先となるアクション名
+        #   さっそく、リダイレクト処理を実装したいところですが、もう1つ学んでおきましょう。
+        #   今回はリダイレクト処理を定義して、before_actionで実行させますが、一部のアクションについては処理を実行させたくないため、exceptオプションを使用し指定する必要があります。
+          
+        #    exceptエクセプトオプション
+        #   before_actionで使用できるオプションです。exceptは「除外する」という意味があります。
+        #   こちらの後に指定したアクションに対しては、事前処理は実行されません。
+          
+        #    リダイレクト処理を用意しましょう
+        #   tweets_controller.rbを編集します。
+          
+        #   app/controllers/tweets_controller.rb
+        #   class TweetsController < ApplicationController
+        #     before_action :set_tweet, only: [:edit, :show]
+        #     before_action :move_to_index, except: [:index, :show]
+          
+        #     def index
+        #       @tweets = Tweet.all
+        #     end
+          
+        #     def new
+        #       @tweet = Tweet.new
+        #     end
+          
+        #     def create
+        #       Tweet.create(tweet_params)
+        #     end
+          
+        #     def destroy
+        #       tweet = Tweet.find(params[:id])
+        #       tweet.destroy
+        #     end
+          
+        #     def edit
+        #     end
+          
+        #     def update
+        #       tweet = Tweet.find(params[:id])
+        #       tweet.update(tweet_params)
+        #     end
+          
+        #     def show
+        #     end
+          
+        #     private
+        #     def tweet_params
+        #       params.require(:tweet).permit(:name, :image, :text)
+        #     end
+          
+        #     def set_tweet
+        #       @tweet = Tweet.find(params[:id])
+        #     end
+          
+        #     def move_to_index
+        #       unless user_signed_in?
+        #         redirect_to action: :index
+        #       end
+        #     end
+        #   end
+          
+          
+        #   これでもし、ログインしていない状態で新規投稿画面へ直接アクセスしようとしても、before_actionによりmove_to_indexメソッドが先に実行され、indexアクションのindex.html.erbページにリダイレクトしてくれます。
+          
+        #   3 行目
+        #   indexアクションにアクセスした場合、indexアクションへのリダイレクトを繰り返してしまい、無限ループが起こります。この対策として、except: :indexを付け加えています。
+          
+        #   また、ログインしていなくても、詳細ページに遷移できる仕様にするためにexcept: [:index, :show]としています。
+          
+        #   42~46 行目
+        #   unlessでuser_signed_in?を判定して、その返り値がfalseだった場合にredirect_toが実行されます。
+        #   すなわち、ユーザーがログインしていない場合にはindexアクションが実行されます。
+          
+        #    ブラウザで新規投稿ページにアクセスしましょう
+        #   それでは、もう一度直接URLを入力して新規投稿ページへアクセスし、投稿ページではなくindexアクションの投稿一覧ページに戻るか確認しましょう。
+          
+        #   http://localhost:3000/tweets/new
+        #   ログインしていない状態であれば、新規投稿ページではなくトップページが表示されるはずです。
+          
+        #   補足情報
+        #   deviseによるユーザー管理機能の実装は、この後のカリキュラムでも頻繁に登場します。以下の補足カリキュラムでdeviseの詳細について解説しています。もしこの段階でも興味があればご覧ください。なお、以下の補足カリキュラムは、今後のカリキュラムでも必要に応じて紹介します。一部まだ習っていない内容も含まれていることをご了承ください。
+          
+        #   deviseによるユーザー管理機能導入のおさらい
+          
+        #   また、deviseによるユーザー管理機能においては、マイグレーションファイルについてのトラブルが生じがちです。また、必要に応じてdeviseを再導入しなければいけない状況が発生します。それらについては以下の補足カリキュラムで紹介しています。
+          
+        #   データベースに関する修正作業を学ぼう
+        #   deviseの削除方法を学ぼう
+          
+        #   これらの補足カリキュラムも、必要に応じて今後のカリキュラムでご紹介します。
+          
+        #   練習問題
+        #   理解度向上のための練習問題です。ぜひチャレンジしましょう。
+          
+        #   【練習問題 Ruby on Rails（PicTweet）】ユーザーを登録しよう
+          
+        #   解答に行き詰まってしまった場合、適宜カリキュラムを参考にしていただいて構いません。
+          
+        #   この章の振り返り
+        #   本章では、ユーザーの管理機能を実装しました。
+          
+        #   Gemのdeviseを使用すると、ゼロからユーザー機能を作成するより断然簡単に実装が可能です。
+        #   是非覚えておきましょう。
+          
+        #   要点チェック
+        #    deviseとは、ユーザー管理機能を簡単に実装するためのGemのこと
+        #    rails g devise:install コマンドとは、deviseというGemの設定関連に使用するファイルを自動で生成するコマンドのこと
+        #    rails g deviseコマンドとは、deviseの中で使用するユーザーモデルclass名を置き換え、modelなど必要なファイルを生成するコマンドのこと
+        #    rails g devise:viewsコマンドとは、deviseで自動生成されたログインや新規作成画面を変更する際に使用するコマンドのこと
+        #    user_signed_in?メソッドとは、ログインしているユーザー情報を取得するメソッドのこと
+        #    リダイレクトとは、「本来受け取ったパスとは別のパスへ転送する」こと
+        #    redirect_toメソッドとは、指定先にリダイレクトさせるメソッドのこと
+        #    rails g migrationコマンドとは、マイグレーションファイルを生成するためのコマンド。命名規則に沿うと、必要なマイグレーションが記述された状態で生成されること
+        #    スネークケースとキャメルケースとは、複数の単語が連立する場合に使用する命名パターンのこと
+        #    devise_parameter_sanitizerメソッドとは、deviseでユーザー登録する場合に使用できる、「特定のカラムを許容する」メソッドのこと
+        #    application_controller.rbファイルとは、rails g controllerが生成するコントローラーが予め継承しているコントローラーのこと
+        # https://master.tech-camp.in/v2/curriculums/4221
+  
 
 
   def new
@@ -333,16 +471,19 @@ class PrototypesController < ApplicationController
         # else
         #   render :edit
         # end
-
-
-    # https://master.tech-camp.in/v2/curriculums/4219
+        #  https://master.tech-camp.in/v2/curriculums/4219
       # tweet = Tweet.find(params[:id])
-      # tweet.update(tweet_params)
-
+    # tweet.update(tweet_params)
   end
 
   def edit
     @prototype = Prototype.find(params[:id])
+    #MEMO
+    #  @item = Item.find(params[:id]) 
+    #もし、現在ログインしているユーザーは商品を出品ユーザーではなかった時、トップページに遷移する
+    unless current_user == @prototype.user
+      redirect_to root_path
+    end
     # https://master.tech-camp.in/v2/curriculums/4219
     # editアクションをコントローラーに定義しよう
       # tweetsコントローラーにeditアクションを定義しましょう。
@@ -396,5 +537,41 @@ class PrototypesController < ApplicationController
   end
 
 
+  # ログインの有無で表示を変えよう
+  # ヘッダー部分のHTMLは、すべてのビューで共通のテンプレートであるapplication.html.erbにあります。
+  # application.html.erbを編集して、未ログイン時とログイン時でボタンの表示を変える実装をしましょう。
+
+  # ログイン状態の確認には、user_signed_in?メソッドを使用します。
+
+  #  user_signed_in?ユーザー サインド インメソッド
+  # Gemのdeviseを導入しているため、使用できるメソッドです。
+  # ログインしているかどうかの判定を行います。
+
+  # user_signed_in?メソッドは、ユーザーがログインしていればtrueを、ログアウト状態であればfalseを返します。
+
+    # [Another Answer]
+      # before_action :contributor_confirmation, only: [:edit, :update, :destroy]
+      # def contributor_confirmation
+      #   redirect_to root_path unless current_user == @prototype.user
+      # end
+      # [Ref.]
+          # before_action :contributor_confirmation, only: [:edit, :update]
+
+          # def edit
+          # end
+
+          #   def update
+          #     if @item.update(item_params)
+          #       redirect_to item_path
+          #     else
+          #       render :edit
+          #     end
+          #   end
+
+          #   private
+          # def contributor_confirmation
+          #     redirect_to root_path unless @item.user == current_user
+          # end
+          # https://qiita.com/N396184501/items/a02bd2ecbbe135f88d6c
 
 end
