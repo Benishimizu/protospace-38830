@@ -1,8 +1,39 @@
 class PrototypesController < ApplicationController
 
-  # def index
-  #   @prototypes = Prototype.includes(:user)
-  # end
+  before_action :authenticate_user!, except: [:index, :show]
+
+  # 解説
+    # コントローラーの先頭に、before_action :authenticate_user!と記述します。
+    # この記述により、ログインしていないユーザーをログインページの画面に促すことができます。
+    # https://master.tech-camp.in/v2/curriculums/4839
+
+
+    # authenticate_user!オウセンティケイト ユーザーメソッド
+    # ログイン状態によって表示するページを切り替えるdeviseのメソッドです。
+    # authenticate_user!メソッドは、処理が呼ばれた段階で、ユーザーがログインしていなければ、そのユーザーをログイン画面に遷移させます。
+    
+    # この仕組みを利用し、before_actionで呼び出すことで、アクションを実行する前にログインしていなければログイン画面に遷移させられます。
+      # before_action :authenticate_user!にonlyとexceptを記載する方法。
+
+
+      # ■onlyの場合
+
+      # onlyで指定されたアクションにリクエストが送られた場合のみメソッドが発動します。
+      # 【例】
+      # before_action :authenticate_user!, only: [:new]
+      # 上記の場合は、controllerにnewアクションにリクエストがあったときのみauthenticate_user!メソッドが発動します。
+
+
+      # ■exceptの場合
+
+      # exceptで指定されたアクション"以外"にリクエストが送られた場合のみメソッドが発動します。
+      # 【例】
+      # before_action :authenticate_user!, except: [:index,:show]
+      # 上記の場合、index、showアクション以外のアクションにリクエストがあったときのみauthenticate_user!メソッドが発動します。
+      # つまり、記載されたコントローラーに7つのアクションが定義されているとすると、new,create,edit,update,destroyの⑤つのアクションの際にauthenticate_user!が動くということになります。
+
+
+
 
   def new
     @prototype = Prototype.new
