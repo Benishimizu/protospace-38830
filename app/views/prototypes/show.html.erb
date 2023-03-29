@@ -1,0 +1,221 @@
+<main class="main">
+  <div class="inner">
+    <div class="prototype__wrapper">
+      <p class="prototype__hedding">
+         <%= @prototype.title %>
+        <%# <%= "プロトタイプのタイトル"%#> %>
+      </p>
+      <%= link_to "by #{@prototype.user.name}", root_path, class: :prototype__user %>
+      <%# <%= link_to "by プロトタイプの投稿者", root_path, class: :prototype__user %#> %>
+
+    <%# プロトタイプの投稿者とログインしているユーザーが同じであれば以下を表示する %>
+        <div class="prototype__manage">
+        <% if user_signed_in? && current_user == @prototype.user%>
+       <%# MEMO
+          <% if current_user == @prototype.user%#>
+          :これでもOK
+          今回はUSER_SIGN_INがなくてもINDEXでSIGN INをしている状態なので特に必要ない（特例）
+          <% if user_signed_in?  && current_user.id == tweet.user_id %＃>
+          ：current_user.id でIDを聞いてるから tweet.user_id　とIDをつける
+          https://master.tech-camp.in/v2/curriculums/4224
+          要点チェック[ログイン中のユーザー情報取得]
+            user_signed_in?は、ユーザーがログインしているか否かを判断できるdeviseが用意しているメソッドのこと
+            current_userは、ログインをしているユーザーの情報が取得できるdeviseが用意しているメソッドのこと
+              *「ユーザーがログインしている」かつ「投稿したユーザーである投稿だけに許可」という実装
+              current_user.id == tweet.user_idと記述することで、「現在ログインしているユーザー」と「ツイートを投稿したユーザー」が同じか否かを判定することができます。
+              この場合のtweet.user_idという記述は、tweetとuserのアソシエーションによって成立しています。
+              また、if文中に複数の条件を定義する際に、論理演算子&&を用いていることも確認しておきましょう。
+              &&は論理演算子の1つです。条件A && 条件Bとなっていた場合、条件Aと条件Bが共に真の場合のみtrueが返され、その後の処理が実行されます。
+              反対に、条件Aと条件Bのどちらか、または双方が偽であった場合はfalseが返されることも覚えておきましょう。
+              current_user.id == @tweet.user_idという条件を含むif文で、プルダウンメニューごと囲むことによって、「未ログイン時や自分の投稿ではないときは非表示」となるように書き換えました。
+
+              https://master.tech-camp.in/v2/curriculums/5194
+              目的
+                ユーザーがログインしている場合とログインしていない場合で表示を変える方法を理解すること
+                「ツイートを投稿したユーザーのみ」という条件を追加する方法を理解すること
+                論理演算子（&&）の使い方を理解すること
+                 問題1：ユーザーがログインしている場合のみ、ツイートの中に「編集」と「削除」が表示されるように実装しましょう
+                    編集するファイルは以下の2つです
+                    ・/tweets/index.html.erb
+                    ・/tweets/show.html.erb
+                https://master.tech-camp.in/v2/curriculums/5269
+                  A.views/tweets/index.html.erbに          <% if user_signed_in? %＃><%end%#>を書く
+                  views/tweets/show.html.erbも<% if user_signed_in? %＃><%end%#>を書く
+                  問題2：投稿者本人のみ、「編集」と「削除」が表示されるように変更しましょう
+                  問題1で設定した条件では、他のユーザーにも、自分が投稿したツイートの「編集」と「削除」が表示されてしまいます。
+                  投稿者本人のみ、「編集」と「削除」が表示されるように変更しましょう。なお、「詳細」は変わらずどのユーザーにも表示されるようにします。
+                  A.views/tweets/index.html.erbと     views/tweets/show.html.erbも<% if user_signed_in? %＃>を編集して
+                  <% if user_signed_in?  && current_user.id == tweet.user_id %#>書く
+
+
+
+
+    %>
+          <%= link_to "編集する", edit_prototype_path(@prototype), class: :prototype__btn %>
+    <%# MEMO２
+          https://master.tech-camp.in/v2/curriculums/4219
+
+          編集ボタンを投稿一覧に追加しよう
+            編集画面に遷移するための、ボタンを作成します。
+            編集ボタンは、削除ボタンの上へ表示されるようにします。
+            また、削除ボタンと同じように、link_toメソッドを使用します。
+
+            編集画面へ遷移するパスには、tweetのidをパラメーターとして設定しましょう。
+            destroyメソッドの時と同様に遷移先がツイートごとに異なるためです。
+
+            index.html.erbを編集
+
+
+            他のカリキュラムにある
+            （https://master.tech-camp.in/v2/curriculums/7090）
+            【例】リンク先をURLで指定する場合
+            <%= link_to 'リンクに表示する文字', 'リンク先のURL' %＃>
+            【例】リンク先をパスで指定する場合
+            <%= link_to 'リンクに表示する文字', 'パス', method: :HTTPメソッド %＃>
+
+            link_toメソッドでパスを指定する場合、何も指定しなければデフォルトでGETメソッドが設定されます。
+            したがって、GETメソッドの指定を省略して記述することができます。
+            他カリキュラム：https://master.tech-camp.in/v2/curriculums/4218
+            index.html.erbを編集しましょう
+              次にlink_toメソッドを使用して、削除ボタンを追加しましょう。
+              削除ボタンはツイートの表示画面の右上に配置します。
+
+              削除するツイートを区別するために、削除ボタンのパスにはツイートのidをパラメーターとして持たせましょう。
+              具体的には/tweets/《tweetのid》というパスにすると、パラメーターとして受け取ることができます。
+
+          ■ご質問内容①
+
+
+          ・METHOD（GETやDELETE）を書くとき
+          ・class: :prototype__btnを書くとき
+          上記の違いはそれぞれどのようなものでしょうか？　
+          ■回答①
+
+
+          ・METHOD（GETやDELETE）を書くとき
+
+
+          こちらに関しては、植田様のご認識通り
+          指定したいパスのMETHODが「GETメソッド」である場合、省略可能。
+          反対に「GETメソッド以外（POSTやDELETE）」である場合は、指定が必要となります。
+          ・class: :prototype__btnを書くとき
+
+
+          こちらは、クラス名であることから
+          cssで装飾をつけたい場合に記述するものとなります。
+          したがって、装飾をつける必要がない場合は「class: :◯◯」が不要です。
+          ■ご質問内容②
+
+
+          edit_tweet_path(tweet.id)の引数は、棚の取手のような認識でよろしいでしょうか？
+          ■回答②
+
+
+          「それぞれのツイートのIDが表示されるようにPrefixの引数として渡すようにしている」を詳しくご説明すると、
+          「idが何番のツイートを編集するのか」の"何番"に該当する部分を教えてあげている ということであり、
+
+          棚を例に挙げると、
+          取り出したいお皿が"何段目"の棚にあるかを教えてあげる役割を担っております。
+          → 何段目かがわからない状態ですと、お皿を見つけ出すことができない状態。
+               
+
+    %>
+
+
+          <%= link_to "削除する", prototype_path(@prototype),method: :delete, class: :prototype__btn %>
+          <%# MEMO3
+          https://master.tech-camp.in/v2/curriculums/4218#10
+          
+           %>
+          <%# <%= link_to "編集する", root_path, class: :prototype__btn %#> %>
+          <%# <%= link_to "削除する", root_path, class: :prototype__btn %#>  %>
+          
+        </div>
+        <% end %>
+      <%# // プロトタイプの投稿者とログインしているユーザーが同じであれば上記を表示する %>
+      <div class="prototype__image">
+        <%= image_tag @prototype.image %>
+        <%# <%= image_tag "プロトタイプの画像" %#> %>
+      
+      </div>
+      <div class="prototype__body">
+        <div class="prototype__detail">
+          <p class="detail__title">キャッチコピー</p>
+          <p class="detail__message">
+            <%= @prototype.catch_copy %>
+            <%# <%= "プロトタイプのキャッチコピー" %#> %>
+          </p>
+        </div>
+        <div class="prototype__detail">
+          <p class="detail__title">コンセプト</p>
+          <p class="detail__message">
+            <%= @prototype.concept %>
+            <%# <%= "プロトタイプのコンセプト" %#> %>
+          </p>
+        </div>
+      </div>
+      <div class="prototype__comments">
+      <% if user_signed_in? %>
+        <%# ログインしているユーザーには以下のコメント投稿フォームを表示する %>
+          <%= form_with model: [@prototype, @comment],local: true do |f|%>
+                    <%# <%= form_with model: モデル名,local: true do |f|%#> %>
+            <div class="field">
+              <%= f.label :content, "コメント" %><br />
+              <%= f.text_field :content, id:"comment_content" %>
+              <%# <%= f.label :hoge, "コメント" %><br />
+              <%# <%= f.text_field :hoge, id:"comment_content" %>
+            <%# MEMO
+              基本的には<%= f. と<%= form.は書き方が違うだけで同じ意味
+              例1]
+                    <%= form_with(model: [@tweet, @comment], local: true) do |form| %#>
+                    <%= form.text_area :text, placeholder: "コメントする", rows: "2" %#>
+                    <%= form.submit "SEND" %#>
+
+                      |form|となっているため<%= form.となる
+                      text_area・・形式
+                      :text,・・カラム名と同じにする必要がある
+
+              例2]
+                      <%= form_with model: モデル名,local: true do |f|%#>
+                      <%# <%= f.label :hoge, "コメント" %#><br />
+                      <%# <%= f.text_field :hoge, id:"comment_content" %#>
+                      |f|となっているため<%= f.になる
+                      今回の場合はcomments　テーブルの　内容つまりcontentと紐づける必要があるーー＞
+                      <%= f.label :content,になる
+                      label ・・・形式
+            %>
+            </div>
+            <div class="actions">
+              <%= f.submit "送信する", class: :form__btn %>
+            </div>
+           <% end %>
+        <%# // ログインしているユーザーには上記を表示する %>
+      <% end %>
+        <ul class="comments_lists">
+          <%# 投稿に紐づくコメントを一覧する処理を記述する %>
+          <% @comments.each do |comment| %>
+          <%# 
+            @commentsには複数のコメントのレコードが入っているので、配列の形をとっています。
+            そのため、ビューに表示させるためにはeachメソッドを使って、ひとつひとつのレコードに分解してから表示させます。
+
+            また、コメントしたユーザーの名前をクリックしたら、そのユーザーのマイページへ遷移するようにします。そのために、名前のところへlink_toメソッドを使ってリンクを作りました（リンクはまだクリックしないようにしましょう。）
+
+            ユーザーのidはcomment.user_idとパスに記述することで、コメントを投稿したユーザーのidをparamsで扱えるようにしてます。
+           %>
+
+            <li class="comments_list">
+              <%# <%= " コメントのテキスト "%>
+               <%= comment.content%>
+              <%# <%= link_to "（ ユーザー名 ）", root_path, class: :comment_user %>
+              <%# <%  link_to "（ #{comment.user.name} ）", root_path, class: :comment_user %#> %>
+              <%  link_to "（ #{comment.user.name} ）", user_path(comment.user), class: :comment_user %>
+
+            </li>
+          <%# // 投稿に紐づくコメントを一覧する処理を記述する %>
+          <% end %>
+
+        </ul>
+      </div>
+    </div>
+  </div>
+</main>

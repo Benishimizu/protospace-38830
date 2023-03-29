@@ -1,0 +1,39 @@
+<div class="main">
+  <div class="inner">
+    <div class="form__wrapper">
+      <h2 class="page-heading">ユーザーログイン</h2>
+        <%# 「モデル名」にはUserモデルであれば@userを渡しましょう。%>
+        <%# 「ログイン機能へのパス」は、devise導入後にrails routesを実行してdevise/sessions#createへのパスを確認し、記載してください。 %>
+        <%= form_with model: @user, url: user_session_path, local: true do |f| %>
+        <%#  %>
+        <%# <%= form_with model: モデル名, url: ログイン機能へのパス, local: true do |f| %#> %>
+
+
+        <div class="field">
+          <%= f.label :email, "メールアドレス" %><br />
+          <%= f.email_field :email, id:"user_email", autofocus: true, autocomplete: "email" %>
+        </div>
+
+        <div class="field">
+          <%= f.label :password, "パスワード（6文字以上）" %><br />
+          <%= f.password_field :password, id:"user_password", autocomplete: "current-password" %>
+        </div>
+
+        <div class="actions">
+          <%= f.submit "ログイン", class: :form__btn %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<%# 
+ ヘッダーの「ログイン」ボタンに適切なパスを記載した（devise/sessions#newに該当するパスを、rails routesを用いて確認する）
+                  new_user_session_path
+ ヘッダーの「ログアウト」ボタンに適切なパスを記載した（devise/sessions#destroyに該当するパスを、rails routesを用いて確認する。HTTPメソッドの指定に注意。）
+                  destroy_user_session
+ sessions/new.html.erbのフォームを、正しい形に書き直した
+ sessions/new.html.erbで「:hoge」と表記されている部分を、正しいものに修正した（PicTweetなどのログインページも参考にする）
+ サーバーを再起動し、ブラウザでログアウト/ログインができることを確認した
+ 情報が正しくない、情報が欠けている場合は、新規登録・ログインができないことを確認した
+  %>

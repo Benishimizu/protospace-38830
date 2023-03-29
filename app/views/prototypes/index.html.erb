@@ -1,0 +1,61 @@
+<main class="main">
+  <div class="inner">
+  <% if user_signed_in? %>
+
+    <%# ログインしているときは以下を表示する %>
+      <div class="greeting"> 
+        <%= "こんにちは、" %>
+        <%=  link_to "#{current_user.name}さん", user_path(current_user), class: :greeting__link%>
+          <%# <%=  link_to "ユーザー名さん", root_path, class: :greeting__link%＃
+          https://qiita.com/AKI3/items/a39209491dd0867eb0a1#:~:text=%E3%80%8Cdo%20%7Cf%7C%E3%80%8D%E3%81%A8,%E6%83%85%E5%A0%B1%E3%81%8C%E8%A1%A8%E7%A4%BA%E3%81%95%E3%82%8C%E3%81%BE%E3%81%99%E3%80%82> %>
+          <%# 
+            ユーザー名には、current_user.nicknameとすることで現在ログインしているニックネームを表示できます。
+
+            マイページへのリンクは、/users/:idと指定します。
+            :idの部分には表示したいユーザーのidを入れる必要がありますが、今回はマイページ、つまりログイン中のユーザーのページなので、current_user.idとします。
+
+            これでユーザー名にマウスを重ねるとプルダウンで表示されるマイページへのリンクが作られました。 
+            %>
+
+        
+       </div>
+       <% end %>
+     <%# // ログインしているときは上記を表示する %>
+    <div class="card__wrapper">
+       <%# 投稿機能実装後、部分テンプレートでプロトタイプ投稿一覧を表示する %>
+          <%= render partial: 'prototype', collection: @prototypes %>
+
+        <%# Memo
+        <%= message.user.name %#>
+        %>
+
+      <%# 
+      PicTweetのツイート表示コード
+
+        <div class="contents row">
+          <% @tweets.each do |tweet| %#>
+            <%= render partial: "tweet", locals: { tweet: tweet } %#>
+
+            <%#MEMO
+            collectionオプションを使用すると、EACHメソッドで何行にも渡るコーディングを1行にまとめて同じ結果の処理を行うことができます。
+            ：EACH METHODの短縮版
+            
+
+            【例】collectionオプションを使用した場合（@hogesには繰り返し表示させたい要素が複数入っている）
+                <%= render partial: 'hoge', collection: @hoges %#>
+                collectionオプションを使用する際のポイントとしては、複数要素が入っているインスタンス変数を、collectionオプションの対象に指定することです。
+                また、collectionオプションを使用した場合、呼び出した部分テンプレート内では、インスタンス変数から取り出した要素を、部分テンプレート名と同じ変数名で扱うことができます。
+                つまり、_hoge.html.erb内において、@hogesから取り出された1つ1つの要素はhogeとして扱うことができます。
+                https://master.tech-camp.in/v2/curriculums/4762
+
+
+              %#>
+          <% end %#>
+        </div>
+      %>
+
+     
+
+    </div>
+  </div>
+</main>

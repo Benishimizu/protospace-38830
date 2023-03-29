@@ -1,0 +1,107 @@
+<div class="card">
+  <%= link_to image_tag(prototype.image, class: :card__img ), prototype_path(prototype)%>
+    <%# <%= link_to image_tag("プロトタイプの画像", class: :card__img ), root_path%#> %>
+  <div class="card__body">
+    <%= link_to prototype.title, prototype_path(prototype), class: :card__title%>
+<%# MEMO %>
+        <%# <%= link_to "プロトタイプのタイトル", root_path, class: :card__title%#> 
+        https://master.tech-camp.in/v2/curriculums/4845
+        https://master.tech-camp.in/v2/curriculums/4218
+        link_toの遷移先をPrefixで指定しよう
+          これまでlink_toにはURI Patternを用いて遷移先を指定していましたが、今回は、Prefixを用いて遷移先を指定します。
+          link_toを用いて遷移先のパスを指定する際は、Prefixを使用するのが一般的です。
+
+          Prefixプレフィックス
+          Prefixとは、ルーティングのURI Patternに名前をつけて変数化したものです。
+          これにより、URI Patternの代わりにPrefixを用いてパスを表現できます。
+          # Prefix未使用
+            <%= link_to "link_button", '/', class: "header__title--text" %＃>
+
+          # Prefix使用
+            <%= link_to "link_button", root_path, class: "header__title--text" %＃>
+            削除するdestroyアクションに対応するPrefixはtweetということが分かります。
+
+            tweetというPrefixなので、tweet_pathとパスを指定します。
+            また、このとき、HTTPメソッドがDELETEであることにも注意しましょう。
+
+            また、Prefixを用いる前は、"/tweets/#{tweet.id}"と記述してそれぞれのツイートのID（tweet.id）が入るようにしていました。
+            一方、Prefixを用いる場合は、このツイートのIDはtweet_path(tweet.id)のようにPrefixの引数として渡すようにします。
+
+
+        ■ 解決したいこと
+          編集
+          ＿Pathの書き方について確認させてください。
+          https://master.tech-camp.in/v2/curriculums/4218
+          <%= link_to '削除', tweet_path(tweet.id), method: :delete %#>
+          と比較して
+          https://master.tech-camp.in/v2/curriculums/4845
+          <%= link_to current_user.name, edit_user_path(current_user) %#>
+          と２つの種類があると思うのですが、tweet_path(tweet.id)のようにIDをつける時とつけないときの差は何になりますか？
+
+
+          ２つ目のコードのURIを見ていると「 /users/:id/edit(.:format)」　と、IDが入っており、困惑しています
+        ■ 調べた内容とそこから立てた仮説
+          引数にidが含まれる変数を設定できていれば、【.id】の有無に特段違いはございません。
+
+
+          <%= link_to '削除', tweet_path(tweet.id), method: :delete %#>
+          変数tweetにはすでにid情報が含まれているため、tweet_path(tweet.id)とtweet_path(tweet)はどちらも同じ結果を返します。
+
+
+          同じ様に
+
+
+          <%= link_to current_user.name, edit_user_path(current_user) %#>
+          こちらの引数を(current_user.id)と設定しても問題ありません。
+          current_userにはidの情報を含んでいるためどちらの記述も可能となります。
+
+
+          この様に、
+          ルーティング上でidを必要とするパスを生成する際には特定のidのデータを渡すことができればどちらの書き方でも問題ない、とご認識いただけたらと存じます。
+                  
+        %>
+<%# MEMO END %>
+    <p class="card__summary">
+      <%= prototype.catch_copy %>
+            <%# <%= "プロトタイプのキャッチコピー" %#> %>
+    </p>
+    <%= link_to "by #{prototype.user.name}", user_path(prototype.user), class: :card__user %>
+          <%# <%= link_to "by #{prototype.user.name}", root_path, class: :card__user %#> %>
+
+        <%# <%= link_to "by プロトタイプの投稿者名", root_path, class: :card__user %#> %>
+
+
+
+        <%# 
+         collectionコレクションオプション
+          collectionオプションは、指定したインスタンス変数の中にある要素の数だけ、部分テンプレートを繰り返し呼び出すことができるオプションです。
+          collectionオプションを使えば、繰り返し表示させたい要素がインスタンス変数に複数入っている場合でも、eachメソッドを使用せずにrenderで繰り返し表示できます。
+
+          以下はcollectionオプションを使用しない場合のコード例です。
+
+          【例】これまでに学習したコードの場合（@hogesには繰り返し表示させたい要素が複数入っている）
+
+            <% @hoges.each do |hoge|%#>
+              <%= render partial: 'hoge', locals: {hoge: hoge} %#>
+            <% end %#>
+            上記は以下の処理を行なっています。
+            1. @hogesに入っている要素を、hogeとして1つ取り出す
+            2. _hoge.html.erbという部分テンプレートを呼び出し、その部分テンプレート内では、取り出された1つのhogeという要素をhogeという名前で扱う設定をする
+            3. eachメソッドを使用しているので、1~2を@hogesに入っている要素の数だけ繰り返し行う
+
+            collectionオプションを使用すると、1行で同じ結果の処理を行うことができます。
+
+            【例】collectionオプションを使用した場合（@hogesには繰り返し表示させたい要素が複数入っている）
+            1
+            <%= render partial: 'hoge', collection: @hoges %#>
+            collectionオプションを使用する際のポイントとしては、複数要素が入っているインスタンス変数を、collectionオプションの対象に指定することです。
+            また、collectionオプションを使用した場合、呼び出した部分テンプレート内では、インスタンス変数から取り出した要素を、部分テンプレート名と同じ変数名で扱うことができます。
+            つまり、_hoge.html.erb内において、@hogesから取り出された1つ1つの要素はhogeとして扱うことができます。
+
+            それでは、collectionオプションを使用する形へビューを編集しましょう
+              
+              
+              
+         %>
+  </div>  
+</div>
