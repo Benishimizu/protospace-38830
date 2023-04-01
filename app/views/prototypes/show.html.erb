@@ -5,7 +5,7 @@
          <%= @prototype.title %>
         <%# <%= "プロトタイプのタイトル"%#> %>
       </p>
-      <%= link_to "by #{@prototype.user.name}", root_path, class: :prototype__user %>
+      <%= link_to "by #{@prototype.user.name}", user_path(@prototype.user), class: :prototype__user %>
       <%# <%= link_to "by プロトタイプの投稿者", root_path, class: :prototype__user %#> %>
 
     <%# プロトタイプの投稿者とログインしているユーザーが同じであれば以下を表示する %>
@@ -52,6 +52,8 @@
 
     %>
           <%= link_to "編集する", edit_prototype_path(@prototype), class: :prototype__btn %>
+          <%= link_to "削除する", prototype_path(@prototype), method: :delete, class: :prototype__btn %>
+
     <%# MEMO２
           https://master.tech-camp.in/v2/curriculums/4219
 
@@ -117,12 +119,11 @@
           棚を例に挙げると、
           取り出したいお皿が"何段目"の棚にあるかを教えてあげる役割を担っております。
           → 何段目かがわからない状態ですと、お皿を見つけ出すことができない状態。
-               
-
     %>
 
 
-          <%= link_to "削除する", prototype_path(@prototype),method: :delete, class: :prototype__btn %>
+
+         
           <%# MEMO3
           https://master.tech-camp.in/v2/curriculums/4218#10
           
@@ -157,7 +158,7 @@
       <div class="prototype__comments">
       <% if user_signed_in? %>
         <%# ログインしているユーザーには以下のコメント投稿フォームを表示する %>
-          <%= form_with model: [@prototype, @comment],local: true do |f|%>
+          <%= form_with model: [@prototype, @comment], local: true do |f|%>
                     <%# <%= form_with model: モデル名,local: true do |f|%#> %>
             <div class="field">
               <%= f.label :content, "コメント" %><br />
@@ -186,7 +187,7 @@
             %>
             </div>
             <div class="actions">
-              <%= f.submit "送信する", class: :form__btn %>
+              <%= f.submit "送信する", class: :form__btn  %>
             </div>
            <% end %>
         <%# // ログインしているユーザーには上記を表示する %>
@@ -208,8 +209,7 @@
                <%= comment.content%>
               <%# <%= link_to "（ ユーザー名 ）", root_path, class: :comment_user %>
               <%# <%  link_to "（ #{comment.user.name} ）", root_path, class: :comment_user %#> %>
-              <%  link_to "（ #{comment.user.name} ）", user_path(comment.user), class: :comment_user %>
-
+              <%= link_to "（#{comment.user.name}）", user_path(comment.user), class: :comment_user %>
             </li>
           <%# // 投稿に紐づくコメントを一覧する処理を記述する %>
           <% end %>
